@@ -1,4 +1,4 @@
-// Copyright 2004 Dominic Cooney. All Rights Reserved.
+﻿// Copyright 2004 Dominic Cooney. All Rights Reserved.
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
+using System;
+using System.Linq;
+
 namespace Earley
 {
-	public abstract class Symbol
+	public static class Util
 	{
-		public static implicit operator Production(Symbol symbol)
-		{
-			return Production.Of(symbol);
-		}
+		public static Terminal AsTerminal(this char c)
+			=> new Terminal(c);
 
-		public static Production operator +(Production production, Symbol symbol)
-		{
-			return production?.Add(symbol);
-		}
+		public static Terminal AsTerminal(this string text)
+			=> new Terminal((text ?? throw new ArgumentNullException(nameof(text))).ToArray());
 
-		public static Production operator +(string text, Symbol symbol)
-		{
-			return text.AsTerminal() + symbol;
-		}
-		public static Production operator +(Symbol symbol, string text)
-		{
-			return symbol + text.AsTerminal();
-		}
-
-		public Symbol() { }
+		public static Nonterminal AsNonterminal(this string name, params Production[] ps)
+			=> new Nonterminal(ps) { Name = name };
 	}
 }

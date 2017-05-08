@@ -41,8 +41,8 @@ namespace Earley
 
 		public virtual int Count => cs.Count;
 
-		public override string ToString() => string.Join("",
-			cs.Select(i => i == -1 ? "(EOF)" : ((char)i).ToString())
-			.OrderBy(i => i));
+		public override string ToString() => "[" + string.Join("|",
+			cs.Select(i => i == -1 ? "(EOF)" : $"\"{((char)i).ToString()}\"")
+			.OrderBy(i => i)) + "]";
 	}
 }

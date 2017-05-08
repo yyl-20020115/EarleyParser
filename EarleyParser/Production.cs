@@ -17,11 +17,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Earley
 {
 	public class Production
 	{
+		public static Production operator +(Production production, string text)
+		{
+			return production?.Add(text.AsTerminal());
+		}
+
+		public static Nonterminal operator |(Production left, Production right)
+		{
+			return new Nonterminal(left, right);
+		}
+
+		public static Production Of(params Symbol[] symbols)
+		{
+			return new Production(symbols);
+		}
+
 		protected readonly List<Symbol> symbols = null;
 
 		public Production(params Symbol[] symbols)
@@ -33,6 +49,36 @@ namespace Earley
 
 		public virtual List<Symbol> Symbols => this.symbols;
 
-		public virtual object Apply(object[] args) => args;
+		public virtual Production Add(params Symbol[] symbols)
+		{
+			this.symbols.AddRange(symbols ?? throw new ArgumentNullException(nameof(symbols)));
+
+			return this;
+		}
+		public virtual dynamic Apply(dynamic[] args) => args;
+
+		public override string ToString()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			for(int i = 0;i<symbols.Count;i++)
+			{
+				Symbol symbol = symbols[i];
+
+				if (symbol is Terminal t)
+				{
+					builder.Append(t.ToString());
+				}
+				else if(symbol is Nonterminal n)
+				{
+					builder.Append(n.Name ?? string.Empty);
+				}
+				if (i < symbols.Count - 1)
+				{
+					builder.Append(' ');
+				}
+			}
+			return builder.ToString();
+		}
 	}
 }

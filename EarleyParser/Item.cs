@@ -24,7 +24,7 @@ namespace Earley
 		protected readonly Production production;
 		protected readonly int index;
 		protected readonly State state;
-		protected readonly List<object> derivations;
+		protected readonly List<dynamic> derivations;
 		protected readonly Item prevItem;
 
 		public virtual bool AtStart => index == 0;
@@ -63,7 +63,7 @@ namespace Earley
 			}
 			this.prevItem = prevItem;
 
-			this.derivations = index == 0 ? null : new List<object>();
+			this.derivations = index == 0 ? null : new List<dynamic>();
 		}
 
 		public override bool Equals(object obj)
@@ -110,16 +110,16 @@ namespace Earley
 			this.derivations.Add(it);
 		}
 
-		public virtual List<object> Reduce()
+		public virtual List<dynamic> Reduce()
 		{
 			if (!AtEnd)
 			{
 				throw new InvalidOperationException();
 			}
 
-			List<object> result = new List<object>();
+			List<dynamic> result = new List<dynamic>();
 
-			foreach (object[] args in ReduceWorker())
+			foreach (dynamic[] args in ReduceWorker())
 			{
 				result.Add(this.production.Apply(args));
 			}
@@ -128,11 +128,11 @@ namespace Earley
 		}
 
 		// reduces all the derivations for *this* symbol
-		protected virtual List<object> ReduceSymbol()
+		protected virtual List<dynamic> ReduceSymbol()
 		{
 			if (AtStart) throw new InvalidOperationException();
 
-			List<object> result = new List<object>();
+			List<dynamic> result = new List<dynamic>();
 
 			if (prevItem.Symbol is Terminal)
 			{
@@ -149,32 +149,32 @@ namespace Earley
 			return result;
 		}
 
-		protected virtual List<object[]> ReduceWorker()
+		protected virtual List<dynamic[]> ReduceWorker()
 		{
-			List<object[]> result = new List<object[]>();
+			List<dynamic[]> result = new List<dynamic[]>();
 
 			if (production.Symbols.Count == 0)
 			{
-				result.Add(new object[0]);
+				result.Add(new dynamic[0]);
 			}
 			else if (prevItem.AtStart)
 			{
-				foreach (object value in ReduceSymbol())
+				foreach (dynamic value in ReduceSymbol())
 				{
-					object[] args = new object[production.Symbols.Count];
+					dynamic[] args = new dynamic[production.Symbols.Count];
 					args[0] = value;
 					result.Add(args);
 				}
 			}
 			else
 			{
-				List<object> symbolReductions = ReduceSymbol();
+				List<dynamic> symbolReductions = ReduceSymbol();
 
-				foreach (object[] prefix in prevItem.ReduceWorker())
+				foreach (dynamic[] prefix in prevItem.ReduceWorker())
 				{
-					foreach (object value in symbolReductions)
+					foreach (dynamic value in symbolReductions)
 					{
-						object[] args = prefix.Clone() as object[];
+						dynamic[] args = prefix.Clone() as dynamic[];
 						args[prevItem.index] = value;
 						result.Add(args);
 					}

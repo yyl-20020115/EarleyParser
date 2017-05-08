@@ -51,9 +51,11 @@
     <Compile Include="State.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Terminal.cs" />
+    <Compile Include="Uitl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Doc\MainModule.vb" />
     <Content Include="_LICENSE.txt" />
     <Content Include="_README.txt" />
   </ItemGroup>

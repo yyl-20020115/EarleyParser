@@ -33,10 +33,10 @@ namespace Earley
 				? startProduction : throw new ArgumentException(nameof(startProduction));
 		}
 
-		public virtual List<object> Parse(string input)
+		public virtual List<dynamic> Parse(string input)
 			=> Parse(new StringReader(input ?? throw new ArgumentNullException(nameof(input))));
 
-		public virtual List<object> Parse(TextReader reader)
+		public virtual List<dynamic> Parse(TextReader reader)
 		{
 			if (reader == null) throw new ArgumentNullException(nameof(reader));
 
@@ -85,7 +85,7 @@ namespace Earley
 			}
 			else
 			{
-				return new List<object>();
+				return new List<dynamic>();
 			}
 		}
 
