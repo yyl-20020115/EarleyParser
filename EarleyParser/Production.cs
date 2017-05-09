@@ -51,17 +51,21 @@ namespace Earley
 
 		public virtual Production Add(params Symbol[] symbols)
 		{
-			this.symbols.AddRange(symbols ?? throw new ArgumentNullException(nameof(symbols)));
+			this.symbols.AddRange(
+				symbols == null || symbols.Any(s => s == null)
+				? throw new ArgumentNullException(nameof(symbols))
+				: symbols);
 
 			return this;
 		}
+
 		public virtual dynamic Apply(dynamic[] args) => args;
 
 		public override string ToString()
 		{
 			StringBuilder builder = new StringBuilder();
 
-			for(int i = 0;i<symbols.Count;i++)
+			for (int i = 0; i < symbols.Count; i++)
 			{
 				Symbol symbol = symbols[i];
 
@@ -69,7 +73,7 @@ namespace Earley
 				{
 					builder.Append(t.ToString());
 				}
-				else if(symbol is Nonterminal n)
+				else if (symbol is Nonterminal n)
 				{
 					builder.Append(n.Name ?? string.Empty);
 				}

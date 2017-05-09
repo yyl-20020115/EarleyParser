@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Earley
 {
@@ -13,7 +10,7 @@ namespace Earley
 		/// Literal	::= Digit
 		///			  | Literal Digit
 		/// Exp		::= Literal
-		///			  | (Exp )
+		///			  | (Exp)
 		///			  | Exp + Exp
 		///			  | Exp - Exp
 		///			  | Exp * Exp

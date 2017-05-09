@@ -26,6 +26,7 @@ namespace Earley
 		protected readonly Production startProduction;
 
 		public virtual Production StartProduction => this.startProduction;
+
 		public Parser(Production startProduction)
 		{
 			this.startProduction
@@ -95,16 +96,20 @@ namespace Earley
 			IDictionary<Production, List<Item>> completedNullable)
 		{
 			if (item.AtEnd || !(item.Symbol is Nonterminal nt))
-				throw new ArgumentException(nameof(item));
-
-			foreach (Production p in nt.Productions)
 			{
-				Item newItem = new Item(p, state);
-
-				if (!state.Contains(newItem))
+				throw new ArgumentException(nameof(item));
+			}
+			else
+			{
+				foreach (Production p in nt.Productions)
 				{
-					state.Add(newItem);
-					ShiftCompletedNullable(state, newItem, completedNullable);
+					Item newItem = new Item(p, state);
+
+					if (!state.Contains(newItem))
+					{
+						state.Add(newItem);
+						ShiftCompletedNullable(state, newItem, completedNullable);
+					}
 				}
 			}
 		}
@@ -112,13 +117,17 @@ namespace Earley
 		protected virtual void Scanner(Item item, State next, int ch)
 		{
 			if (item.AtEnd || !(item.Symbol is Terminal t))
-				throw new ArgumentException(nameof(item));
-
-			if (t.Contains(ch))
 			{
-				Item newItem = item.NextItem;
-				newItem.Add(ch);
-				next.Add(newItem);
+				throw new ArgumentException(nameof(item));
+			}
+			else
+			{
+				if (t.Contains(ch))
+				{
+					Item newItem = item.NextItem;
+					newItem.Add(ch);
+					next.Add(newItem);
+				}
 			}
 		}
 
