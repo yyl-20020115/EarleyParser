@@ -1,4 +1,4 @@
-An C# Earley Parser Library
+A C# Earley Parser Library
 
 Copyright 2004 Dominic Cooney. All Rights Reserved.
 
